@@ -9,12 +9,20 @@ permissions:
 jobs:
   quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npm run check
+      - name: Install exact dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Unit checks and production build
+        run: npm run check
+      - name: Install Chromium for browser QA
+        run: npx playwright install --with-deps chromium
+      - name: Browser end-to-end QA
+        run: npm run qa:e2e
