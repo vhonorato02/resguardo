@@ -8,7 +8,6 @@ permissions:
   contents: read
 jobs:
   quality:
-    # Playwright 1.57 supports Ubuntu 24.04; GitHub's ubuntu-latest is 26.04.
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -27,3 +26,5 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Browser end-to-end QA
         run: npm run qa:e2e
+      - name: Offline sync, conflict and evidence QA
+        run: npm run qa:sync
