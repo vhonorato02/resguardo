@@ -1,0 +1,17 @@
+{
+  "name": "resguardo-pessoal",
+  "version": "1.0.0-rc.7",
+  "private": true,
+  "description": "PWA privado para registro profissional.",
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm test && npm run build"
+  },
+  "dependencies": {
+    "web-push": "3.6.7"
+  }
+}

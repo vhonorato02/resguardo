@@ -1,0 +1,10 @@
+import { rm, mkdir, cp, writeFile } from 'node:fs/promises';
+const out = new URL('../dist/', import.meta.url);
+await rm(out,{recursive:true,force:true});
+await mkdir(out,{recursive:true});
+await cp(new URL('../public/',import.meta.url),out,{recursive:true});
+await cp(new URL('../src/',import.meta.url),new URL('../dist/src/',import.meta.url),{recursive:true});
+const publicConfig = { SUPABASE_URL: process.env.SUPABASE_URL || '', SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY || '' };
+await writeFile(new URL('../dist/src/config.mjs',import.meta.url), Object.entries(publicConfig).map(([key,value]) => `export const ${key} = ${JSON.stringify(value)};`).join('\n') + '\n');
+if (!publicConfig.SUPABASE_URL || !publicConfig.SUPABASE_PUBLISHABLE_KEY) console.warn('Supabase public config absent: online login disabled in this build.');
+console.log('Static PWA build created in dist/.');

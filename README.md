@@ -1,13 +1,9 @@
 # Resguardo
 
-PWA privado e offline-first para registro pessoal de jornada, ocorrências e anexos, com exportação, histórico de revisões e sincronização opcional no Supabase.
+PWA pessoal e offline-first para registro de jornadas, ocorrências, evidências e histórico.
 
-**Produção:** https://resguardo-pessoal.vercel.app
+Produção: https://resguardo-pessoal.vercel.app
 
-**Status:** release candidate em auditoria. Não anunciar como estável antes da validação ponta a ponta de autenticação, notificações e recuperação entre dispositivos.
+**Status:** release candidate em auditoria. O repositório contém somente código e documentação, nunca dados pessoais ou credenciais.
 
-## Desenvolvimento
-Node.js 22+. Para testes e build, `npm install` e `npm run check`. Segredos administrativos não devem entrar neste repositório nem nas respostas públicas da API.
-
-## Segurança
-A aplicação utiliza Supabase Auth, políticas RLS com proprietário, Storage privado e IndexedDB local. Configurações de backend devem ficar em variáveis de ambiente na Vercel.
+Node 22+: `npm install && npm run check`.
