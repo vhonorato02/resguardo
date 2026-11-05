@@ -1,7 +1,7 @@
 /* Service worker: offline app shell, incoming push and notification interactions. */
-const CACHE = 'resguardo-rc7-20261105';
+const CACHE = 'resguardo-rc8-20261105';
 const SHELL = ['/', '/index.html', '/style.css', '/icon.svg', '/icon-192.png', '/icon-512.png', '/manifest.webmanifest',
-  '/src/app.mjs', '/src/config.mjs', '/src/domain.mjs', '/src/idb.mjs', '/src/auth.mjs', '/src/sync.mjs', '/src/exports.mjs'];
+  '/src/app.mjs', '/src/config.mjs', '/src/domain.mjs', '/src/idb.mjs', '/src/auth.mjs', '/src/sync.mjs', '/src/exports.mjs', '/src/ownership.mjs'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
 });
