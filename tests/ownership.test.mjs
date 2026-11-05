@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {entriesForIdentity,selectBackupData,assertBackupOwnership} from '../src/ownership.mjs';
+const a='owner-a',b='owner-b';
+const guest={id:'guest',attachments:[{id:'fguest'}]};
+const mine={id:'mine',ownerId:a,attachments:[{id:'fmine'}]};
+const other={id:'other',ownerId:b,attachments:[{id:'fother'}]};
+const records=[guest,mine,other];
+test('guest sees only unowned',()=>assert.deepEqual(entriesForIdentity(records,null),[guest]));
+test('owner A sees only A',()=>assert.deepEqual(entriesForIdentity(records,a),[mine]));
+test('owner B sees only B',()=>assert.deepEqual(entriesForIdentity(records,b),[other]));
+test('A backup excludes B evidence and audit',()=>{const backup=selectBackupData(records,records.map(r=>({entryId:r.id})),[{id:'fguest'},{id:'fmine'},{id:'fother'}],a);assert.deepEqual(backup.entries,[mine]);assert.deepEqual(backup.audit,[{entryId:'mine'}]);assert.deepEqual(backup.files,[{id:'fmine'}]);});
+test('guest backup excludes owned evidence',()=>assert.deepEqual(selectBackupData(records,[],[{id:'fmine'},{id:'fguest'}],null).files,[{id:'fguest'}]));
+test('cross owner import rejected',()=>assert.throws(()=>assertBackupOwnership([other],a),/outra conta/));
+test('same owner import accepted',()=>assert.doesNotThrow(()=>assertBackupOwnership([mine],a)));
+test('guest import can be claimed',()=>assert.doesNotThrow(()=>assertBackupOwnership([guest],a)));
+test('signed-in backup rejected for guest',()=>assert.throws(()=>assertBackupOwnership([mine],null),/outra conta/));
